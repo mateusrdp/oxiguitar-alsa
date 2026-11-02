@@ -5,6 +5,10 @@
 //! through OxiGuitar's own plugin host, as the app would load it. `cargo
 //! test` runs it with the rest.
 
+// The plugin is for Linux only (its manifest's conditions); elsewhere there
+// is nothing to build or check.
+#![cfg(target_os = "linux")]
+
 use std::path::Path;
 
 #[test]
