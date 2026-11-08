@@ -1,0 +1,513 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "oxiguitar-audio-alsa-plugin",
+    "languages": [
+      "rust",
+      "yaml",
+      "toml",
+      "shell",
+      "markdown",
+      "json"
+    ],
+    "frameworks": [],
+    "description": "The ALSA audio output plugin for OxiGuitar: plays guitar tablature and score sound through ALSA, Linux native sound system.",
+    "analyzedAt": "2026-11-07T20:59:41Z",
+    "gitCommitHash": "6b35c6bf943c1a9360f5ec8bfc021c157d08c8d6"
+  },
+  "nodes": [
+    {
+      "id": "file:.github/workflows/ci.yml",
+      "type": "service",
+      "name": "CI Pipeline",
+      "filePath": ".github/workflows/ci.yml",
+      "summary": "Continuous integration pipeline: formatting, linting, testing across 6 platforms, license checks, and DCO sign-off verification. The ci-success job gates all merges to develop and main.",
+      "tags": [
+        "ci",
+        "workflow",
+        "testing",
+        "linting"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "GitHub Actions workflow with matrix testing on Linux, Windows, and macOS."
+    },
+    {
+      "id": "file:.github/workflows/publish.yml",
+      "type": "service",
+      "name": "Publish Workflow",
+      "filePath": ".github/workflows/publish.yml",
+      "summary": "Triggers on release publication to send package artifacts to package repositories and winget via oxiguitar-packages reusable workflow. Requires PACKAGES_TOKEN and WINGET_TOKEN secrets.",
+      "tags": [
+        "publish",
+        "release",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "GitHub Actions reusable workflow delegation."
+    },
+    {
+      "id": "file:.github/workflows/release.yml",
+      "type": "service",
+      "name": "Release Workflow",
+      "filePath": ".github/workflows/release.yml",
+      "summary": "Test builds on PRs and pushes to develop/main; draft releases on v* tags. Runs build-oxp.sh per target to produce zip, .deb, .rpm, and SHA256SUMS via oxiguitar-packages reusable workflow.",
+      "tags": [
+        "release",
+        "build",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "languageNotes": "GitHub Actions reusable workflow delegation."
+    },
+    {
+      "id": "document:CHANGELOG.md",
+      "type": "document",
+      "name": "Changelog",
+      "filePath": "CHANGELOG.md",
+      "summary": "Keep a Changelog-formatted release history. Currently documents the initial v0.1.0 release splitting the plugin into its own repository.",
+      "tags": [
+        "changelog",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "Claude Working Rules",
+      "filePath": "CLAUDE.md",
+      "summary": "Standing rules for AI-assisted development: library exactness, no telemetry, DCO compliance, branch strategy, and CI workflow conventions. References the OxiGuitar START-HERE.md as source of truth.",
+      "tags": [
+        "ai-guidelines",
+        "process"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CONTRIBUTING.md",
+      "type": "document",
+      "name": "Contributing Guide",
+      "filePath": "CONTRIBUTING.md",
+      "summary": "Branch strategy (develop/main), pull request process, and DCO sign-off requirements. Bot commits (Claude, Dependabot) are exempt with maintainer review as human sign-off.",
+      "tags": [
+        "contributing",
+        "process",
+        "dco"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Cargo.toml",
+      "type": "config",
+      "name": "Cargo Manifest",
+      "filePath": "Cargo.toml",
+      "summary": "Rust package manifest for oxiguitar-audio-alsa-plugin v0.1.0. Depends on oxiguitar-plugin SDK and oxiguitar-audio-cpal from OxiGuitar repo tag v0.11.0. Linux-only with cpal ALSA host. Uses edition 2024, MSRV 1.99.",
+      "tags": [
+        "cargo",
+        "dependencies",
+        "rust"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README",
+      "filePath": "README.md",
+      "summary": "Project overview: ALSA audio output plugin for OxiGuitar. Covers install, build/test instructions, history (split from oxiguitar repo at v0.11.0), and GPL-3.0 licensing.",
+      "tags": [
+        "readme",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:build-oxp.sh",
+      "type": "file",
+      "name": "Build OXP Script",
+      "filePath": "build-oxp.sh",
+      "summary": "Builds the .oxp plugin file for the current system. Uses cargo rustc with --features oxp --crate-type cdylib. Outputs to dist/audio-alsa-VERSION-SYSTEM-ARCH.oxp. Linux-only.",
+      "tags": [
+        "build",
+        "script",
+        "release"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:clippy.toml",
+      "type": "config",
+      "name": "Clippy Configuration",
+      "filePath": "clippy.toml",
+      "summary": "Clippy linter settings: MSRV 1.99, permits unwrap/expect/panic/indexing only in test code.",
+      "tags": [
+        "clippy",
+        "linting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:deny.toml",
+      "type": "config",
+      "name": "Cargo Deny Configuration",
+      "filePath": "deny.toml",
+      "summary": "Dependency security and license policy: denies unknown registries and git sources, allows GPL-3.0 and other GPL-compatible licenses. Configures six build targets for license scanning.",
+      "tags": [
+        "deny",
+        "security",
+        "licenses"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:manifest.json",
+      "type": "config",
+      "name": "Plugin Manifest",
+      "filePath": "manifest.json",
+      "summary": "OxiGuitar plugin metadata: interface 1.3, ID oxiguitar.audio-alsa, name ALSA audio, Linux-only. Declares audio-device service with id alsa, priority 10.",
+      "tags": [
+        "plugin",
+        "manifest",
+        "metadata"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:rustfmt.toml",
+      "type": "config",
+      "name": "Rustfmt Configuration",
+      "filePath": "rustfmt.toml",
+      "summary": "Rust formatter settings: edition 2024, max width 100, field init shorthand.",
+      "tags": [
+        "rustfmt",
+        "formatting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.github/dependabot.yml",
+      "type": "config",
+      "name": "Dependabot Configuration",
+      "filePath": ".github/dependabot.yml",
+      "summary": "Weekly version updates for Rust crates and GitHub Actions. Ignores oxiguitar-model, oxiguitar-plugin, oxiguitar-plugin-api, oxiguitar-plugin-test (pinned by git tag for frozen interface 1.4). DCO check script skips Dependabot commits.",
+      "tags": [
+        "dependabot",
+        "dependency-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.github/pull_request_template.md",
+      "type": "document",
+      "name": "PR Template",
+      "filePath": ".github/pull_request_template.md",
+      "summary": "Pull request template requiring: change description, test steps, test/docs/CHANGELOG updates, CREDITS.md updates, no test-corpus files, and DCO sign-off.",
+      "tags": [
+        "pr-template",
+        "process"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/check-dco.sh",
+      "type": "file",
+      "name": "DCO Check Script",
+      "filePath": "scripts/check-dco.sh",
+      "summary": "Verifies every commit in a range has a DCO Signed-off-by line matching author email. Skips Claude app commits, Dependabot commits, and their squash merges. Used by CI's dco job.",
+      "tags": [
+        "dco",
+        "sign-off",
+        "verification"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib.rs",
+      "type": "file",
+      "name": "Audio Plugin (ALSA)",
+      "filePath": "src/lib.rs",
+      "summary": "Core plugin implementation: the Audio struct implements Plugin and Service traits. Provides audio-device/alsa service through cpal's ALSA host (oxiguitar-audio-cpal). Exports via oxiguitar_plugin::export_plugin!. Linux-only via cfg gates.",
+      "tags": [
+        "plugin",
+        "audio",
+        "alsa",
+        "cpal",
+        "service",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/contract.rs",
+      "type": "file",
+      "name": "Contract Test Suite",
+      "filePath": "tests/contract.rs",
+      "summary": "Integration test that builds the .oxp file via oxiguitar_plugin_test::build() and validates it through OxiGuitar's plugin host via oxiguitar_plugin_test::check(). Linux-only.",
+      "tags": [
+        "test",
+        "contract",
+        "integration"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:.github/workflows/ci.yml",
+      "target": "file:.github/workflows/release.yml",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "file:.github/workflows/release.yml",
+      "target": "file:.github/workflows/publish.yml",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "file:.github/workflows/ci.yml",
+      "target": "file:scripts/check-dco.sh",
+      "type": "invokes",
+      "direction": "forward"
+    },
+    {
+      "source": "config:Cargo.toml",
+      "target": "config:clippy.toml",
+      "type": "configures",
+      "direction": "forward"
+    },
+    {
+      "source": "config:Cargo.toml",
+      "target": "config:deny.toml",
+      "type": "configures",
+      "direction": "forward"
+    },
+    {
+      "source": "config:Cargo.toml",
+      "target": "config:rustfmt.toml",
+      "type": "configures",
+      "direction": "forward"
+    },
+    {
+      "source": "config:manifest.json",
+      "target": "config:Cargo.toml",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:CONTRIBUTING.md",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:build-oxp.sh",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "document:CHANGELOG.md",
+      "target": "document:README.md",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "file:build-oxp.sh",
+      "target": "config:Cargo.toml",
+      "type": "reads",
+      "direction": "forward"
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:CONTRIBUTING.md",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:README.md",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "config:deny.toml",
+      "target": "config:Cargo.toml",
+      "type": "configures",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:tests/contract.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "description": "Direction corrected (was test \u2192 production)"
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "config:manifest.json",
+      "type": "implements",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "config:Cargo.toml",
+      "type": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check-dco.sh",
+      "target": "document:CONTRIBUTING.md",
+      "type": "documents",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.github/dependabot.yml",
+      "target": "config:Cargo.toml",
+      "type": "monitors",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.github/dependabot.yml",
+      "target": "file:scripts/check-dco.sh",
+      "type": "references",
+      "direction": "forward"
+    },
+    {
+      "source": "document:.github/pull_request_template.md",
+      "target": "document:CONTRIBUTING.md",
+      "type": "documents",
+      "direction": "forward"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:plugin-core",
+      "name": "Plugin Core",
+      "description": "The Rust library implementing the OxiGuitar audio-device plugin for ALSA. Contains the Audio struct with Plugin and Service trait implementations, wired through cpal's ALSA host.",
+      "nodeIds": [
+        "file:src/lib.rs"
+      ]
+    },
+    {
+      "id": "layer:testing",
+      "name": "Testing",
+      "description": "Contract test suite that builds the .oxp file and validates it through OxiGuitar's plugin host.",
+      "nodeIds": [
+        "file:tests/contract.rs"
+      ]
+    },
+    {
+      "id": "layer:configuration",
+      "name": "Configuration",
+      "description": "Project and tool configuration: Cargo manifest, plugin manifest, clippy, deny, and rustfmt settings.",
+      "nodeIds": [
+        "config:Cargo.toml",
+        "config:manifest.json",
+        "config:clippy.toml",
+        "config:deny.toml",
+        "config:rustfmt.toml",
+        "config:.github/dependabot.yml"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "Project documentation: README, changelog, contributing guide, and Claude working rules.",
+      "nodeIds": [
+        "document:README.md",
+        "document:CHANGELOG.md",
+        "document:CONTRIBUTING.md",
+        "document:CLAUDE.md"
+      ]
+    },
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD Pipelines",
+      "description": "GitHub Actions workflows for continuous integration, release builds, and package publishing.",
+      "nodeIds": [
+        "file:.github/workflows/ci.yml",
+        "file:.github/workflows/release.yml",
+        "file:.github/workflows/publish.yml"
+      ]
+    },
+    {
+      "id": "layer:build-scripts",
+      "name": "Build Scripts",
+      "description": "Shell scripts for building the plugin and verifying DCO sign-offs.",
+      "nodeIds": [
+        "file:build-oxp.sh",
+        "file:scripts/check-dco.sh"
+      ]
+    },
+    {
+      "id": "layer:github-config",
+      "name": "GitHub Configuration",
+      "description": "GitHub-specific configuration: pull request template.",
+      "nodeIds": [
+        "document:.github/pull_request_template.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Read the README to understand that oxiguitar-alsa is the ALSA audio output plugin for OxiGuitar \u2014 a guitar tablature viewer. It plays sound through ALSA, Linux's native sound system.",
+      "nodeIds": [
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Plugin Identity",
+      "description": "The manifest.json declares the plugin's identity: ID oxiguitar.audio-alsa, interface 1.3, providing the audio-device/alsa service. This is what OxiGuitar's plugin host looks for.",
+      "nodeIds": [
+        "config:manifest.json"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Build System",
+      "description": "Cargo.toml defines the Rust crate with dependencies on the OxiGuitar plugin SDK and cpal audio library. build-oxp.sh compiles it into the .oxp plugin file.",
+      "nodeIds": [
+        "config:Cargo.toml",
+        "file:build-oxp.sh"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Core Plugin Implementation",
+      "description": "src/lib.rs is the heart of the project: the Audio struct implements Plugin::start() and Service traits, routing audio through cpal's ALSA host. It uses cfg gates for Linux-only compilation.",
+      "nodeIds": [
+        "file:src/lib.rs"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Contract Testing",
+      "description": "tests/contract.rs builds the .oxp file and validates it through OxiGuitar's plugin host \u2014 the same process the app uses. This ensures the plugin meets the SDK contract.",
+      "nodeIds": [
+        "file:tests/contract.rs"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "CI/CD Pipeline",
+      "description": ".github/workflows/ci.yml runs formatting, linting, testing on 6 platforms, license checks, and DCO verification. release.yml and publish.yml handle builds and distribution.",
+      "nodeIds": [
+        "file:.github/workflows/ci.yml",
+        "file:.github/workflows/release.yml",
+        "file:.github/workflows/publish.yml"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Contributing",
+      "description": "CONTRIBUTING.md explains the branch strategy (develop/main), DCO sign-off process, and how pull requests are reviewed and merged.",
+      "nodeIds": [
+        "document:CONTRIBUTING.md"
+      ]
+    }
+  ]
+}
