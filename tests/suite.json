@@ -1,0 +1,16 @@
+{
+  "repository": "mateusrdp/oxiguitar-alsa",
+  "os": [
+    "linux"
+  ],
+  "plugins": [
+    {
+      "name": "audio-alsa",
+      "package": "oxiguitar-audio-alsa-plugin",
+      "library": "oxiguitar_audio_alsa_plugin",
+      "os": [
+        "linux"
+      ]
+    }
+  ]
+}
