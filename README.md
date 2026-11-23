@@ -5,7 +5,7 @@ The ALSA audio output plugin for [OxiGuitar](https://github.com/mateusrdp/oxigui
 In plain words: OxiGuitar works out the sound, and an output plugin hands it to the operating system's sound system on time, batch after batch. Every system has its own sound system, so each gets its own plugin. The [manual](https://mateusrdp.github.io/oxiguitar-alsa/) explains latency and buffers.
 
 - Plugin file `audio-alsa.oxp`, id `oxiguitar.audio-alsa`, Linux only (x86_64 and ARM64). It offers the device list and the stream to the player; the Tools, Plugins window and the footer's output chooser pick the device.
-- It shares its code with the other outputs, oxiguitar-pipewire, oxiguitar-wasapi and oxiguitar-coreaudio: a stream on one of cpal's hosts, in `oxiguitar-audio-cpal`, which lives in the OxiGuitar repository and is tagged with the SDK.
+- It shares its code with the other outputs, oxiguitar-pipewire, oxiguitar-wasapi and oxiguitar-coreaudio: a stream on one of cpal's hosts, in [oxiguitar-audio-cpal](https://github.com/mateusrdp/oxiguitar-audio-cpal), which this plugin depends on by tag.
 - It plays sound only on your machine: it uploads and downloads nothing.
 
 ## Manual
